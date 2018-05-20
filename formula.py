@@ -11,7 +11,7 @@ class Dialog:
     def __init__(self, parent, val):
         top = self.top = Toplevel(parent)
         top.resizable(False, False)
-        top.geometry("400x160+270+180")
+        top.geometry("565x200+270+180")
         self.formula = ''
         self.reactiveFormula = StringVar(value=val)
         self.label = Label(top, text='Enter your formula below')

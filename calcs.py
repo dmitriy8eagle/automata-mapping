@@ -3,7 +3,7 @@ import numpy as np
 
 def make_formula_executable(formula):
   COMMANDS = [ 'pow', 'sqrt']
-  BOOLEAN = {'OR': '|', 'XOR': '^', 'AND': '&'}
+  BOOLEAN = {'XOR': '^', 'OR': '|', 'AND': '&'}
   PREFIX = 'math.'
 
   for command in COMMANDS:

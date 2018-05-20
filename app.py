@@ -63,7 +63,7 @@ class App(Frame):
     def initPlot(self):
         x = [0]
         y = [0]
-        figure = Figure(figsize=(4,4), dpi=100)
+        figure = Figure(figsize=(5,5), dpi=100)
         subplot = figure.add_subplot(111)
         self.dataset, = subplot.plot(x, y, ',')
         subplot.set_xlim([0, 1])

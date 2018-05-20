@@ -3,7 +3,7 @@ import app
 
 def main():
     root = Tk()
-    root.geometry("405x520+250+50")
+    root.geometry("505x635+250+50")
     run = app.App(root)
     root.mainloop()
 
