@@ -44,8 +44,8 @@ class App(Frame):
         self.reactiveFormula = StringVar()
 
         self.mode = IntVar()
-        Radiobutton(self.frame, text="By Formula", variable=self.mode, value=0).grid(row=0, column=0)
-        Radiobutton(self.frame, text="Automata", state='disabled', variable=self.mode, value=1).grid(row=0, column=1)
+        Radiobutton(self.frame, text="Sync", variable=self.mode, value=0).grid(row=0, column=0)
+        Radiobutton(self.frame, text="Async", state='disabled', variable=self.mode, value=1).grid(row=0, column=1)
         
         formulaLabel = Label(self.frame, text = "F(x) =")
         formulaLabel.grid(row = 1, column = 0, padx = 5, pady = 5)
@@ -63,7 +63,7 @@ class App(Frame):
     def initPlot(self):
         x = [0]
         y = [0]
-        figure = Figure(figsize=(4,4), dpi=100)
+        figure = Figure(figsize=(5,5), dpi=100)
         subplot = figure.add_subplot(111)
         self.dataset, = subplot.plot(x, y, ',')
         subplot.set_xlim([0, 1])
