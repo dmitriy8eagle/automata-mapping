@@ -46,6 +46,7 @@ class App(Frame):
         self.mode = IntVar()
         Radiobutton(self.frame, text="Sync", variable=self.mode, value=0).grid(row=0, column=0)
         Radiobutton(self.frame, text="Async", state='disabled', variable=self.mode, value=1).grid(row=0, column=1)
+        Radiobutton(self.frame, text="Bernulli", variable=self.mode, value=2).grid(row=0, column=2)
         
         formulaLabel = Label(self.frame, text = "F(x) =")
         formulaLabel.grid(row = 1, column = 0, padx = 5, pady = 5)
@@ -57,6 +58,11 @@ class App(Frame):
         k_label.grid(row = 2, column = 0, padx = 5, pady = 5)
         self.k_value = Entry(self.frame, width=50)
         self.k_value.grid(row = 2, column = 1,  columnspan = 5, pady = 5)
+
+        n_label = Label(self.frame, text = "n =")
+        n_label.grid(row = 3, column = 0, padx = 5, pady = 5)
+        self.n_value = Entry(self.frame, width=50)
+        self.n_value.grid(row = 3, column = 1,  columnspan = 5, pady = 5)
 
         self.initPlot()
 
@@ -70,7 +76,7 @@ class App(Frame):
         subplot.set_ylim([0, 1])
         self.canvas = FigureCanvasTkAgg(figure, master=self.frame)
         self.canvas.show()
-        self.canvas.get_tk_widget().grid(row = 3, column = 0, columnspan = 5)
+        self.canvas.get_tk_widget().grid(row = 4, column = 0, columnspan = 5)
 
     def openFormulaDialog(self, event):
         if (self.formulaDialogOn):
@@ -83,15 +89,33 @@ class App(Frame):
         self.reactiveFormula.set(inputDialog.formula)
         
     def callCalculateFormula(self):
+        mode = self.mode.get()
         k = self.k_value.get()
+        n = self.n_value.get()
+
         try:
             k = int(k)
         except ValueError:
             return
+        
         formula = self.reactiveFormula.get()
-        if (formula == '' or k <= 0):
+
+        if (mode == 0 and (formula == '' or k <= 0)):
             return
-        new_values = calcs.execute_formula(self.reactiveFormula.get(), k)
+
+        if (mode == 2):
+            if (k <= 0):
+                return
+            
+            try:
+                n = int(n)
+            except ValueError:
+                return
+
+            if (n <= 0):
+                return
+        
+        new_values = calcs.execute_formula(mode, self.reactiveFormula.get(), k, n)
 
         self.dataset.set_xdata(new_values['x'])
         self.dataset.set_ydata(new_values['y'])
