@@ -16,6 +16,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 
 import formula
+import automaton
 import calcs
 
 class App(Frame):
@@ -45,8 +46,8 @@ class App(Frame):
 
         self.mode = IntVar()
         Radiobutton(self.frame, text="Sync", variable=self.mode, value=0).grid(row=0, column=0)
-        Radiobutton(self.frame, text="Async", state='disabled', variable=self.mode, value=1).grid(row=0, column=1)
-        Radiobutton(self.frame, text="Bernulli", variable=self.mode, value=2).grid(row=0, column=2)
+        Radiobutton(self.frame, text="Async", variable=self.mode, value=1).grid(row=0, column=1)
+        Radiobutton(self.frame, text="Bernoulli", variable=self.mode, value=2).grid(row=0, column=2)
         
         formulaLabel = Label(self.frame, text = "F(x) =")
         formulaLabel.grid(row = 1, column = 0, padx = 5, pady = 5)
@@ -79,11 +80,21 @@ class App(Frame):
         self.canvas.get_tk_widget().grid(row = 4, column = 0, columnspan = 5)
 
     def openFormulaDialog(self, event):
-        if (self.formulaDialogOn):
+        if self.formulaDialogOn:
             return
 
         self.formulaDialogOn = True
-        inputDialog = formula.Dialog(self.parent, self.reactiveFormula.get())
+        inputDialog = None
+        if self.mode.get() == 0:
+            inputDialog = formula.Dialog(self.parent, self.reactiveFormula.get())
+        
+        if self.mode.get() == 1:
+            inputDialog = automaton.Dialog(self.parent, self.reactiveFormula.get())
+        
+        if inputDialog == None:
+            self.formulaDialogOn = False
+            return
+        
         self.parent.wait_window(inputDialog.top)
         self.formulaDialogOn = False
         self.reactiveFormula.set(inputDialog.formula)
@@ -100,11 +111,11 @@ class App(Frame):
         
         formula = self.reactiveFormula.get()
 
-        if (mode == 0 and (formula == '' or k <= 0)):
+        if mode == 0 and (formula == '' or k <= 0):
             return
 
-        if (mode == 2):
-            if (k <= 0):
+        if mode == 1:
+            if formula == '' or k <= 0:
                 return
             
             try:
@@ -112,7 +123,19 @@ class App(Frame):
             except ValueError:
                 return
 
-            if (n <= 0):
+            if (n < 0):
+                return
+
+        if mode == 2:
+            if k <= 0:
+                return
+            
+            try:
+                n = int(n)
+            except ValueError:
+                return
+
+            if n <= 0:
                 return
         
         new_values = calcs.execute_formula(mode, self.reactiveFormula.get(), k, n)

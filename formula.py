@@ -11,7 +11,15 @@ class Dialog:
     def __init__(self, parent, val):
         top = self.top = Toplevel(parent)
         top.resizable(False, False)
-        top.geometry("565x200+270+180")
+
+        windowWidth = top.winfo_reqwidth()
+        windowHeight = top.winfo_reqheight()
+
+        positionRight = int(top.winfo_screenwidth()/2.6 - windowWidth/2)
+        positionDown = int(top.winfo_screenheight()/2.5 - windowHeight/2)
+
+        top.geometry("+{}+{}".format(positionRight, positionDown))
+
         self.formula = ''
         self.reactiveFormula = StringVar(value=val)
         self.label = Label(top, text='Enter your formula below')
