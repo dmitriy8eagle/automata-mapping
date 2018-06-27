@@ -12,7 +12,8 @@ from tkinter import StringVar
 
 import matplotlib
 matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 
 import formula
@@ -37,7 +38,10 @@ class App(Frame):
         self.initFrameUI()
 
     def initParentWindow(self):
-        calcButton = Button(self, text = "Calculate", command=self.callCalculateFormula)
+        calcButton = Button(
+            self,
+            text = "Calculate",
+            command=self.callCalculateFormula)
         calcButton.pack(side = RIGHT, padx = 5, pady = 5, ipadx = 10)
 
     def initFrameUI(self):
@@ -45,13 +49,28 @@ class App(Frame):
         self.reactiveFormula = StringVar()
 
         self.mode = IntVar()
-        Radiobutton(self.frame, text="Sync", variable=self.mode, value=0).grid(row=0, column=0)
-        Radiobutton(self.frame, text="Async", variable=self.mode, value=1).grid(row=0, column=1)
-        Radiobutton(self.frame, text="Bernoulli", variable=self.mode, value=2).grid(row=0, column=2)
+        Radiobutton(
+            self.frame,
+            text="Sync",
+            variable=self.mode,
+            value=0).grid(row=0, column=0)
+        Radiobutton(
+            self.frame,
+            text="Async",
+            variable=self.mode,
+            value=1).grid(row=0, column=1)
+        Radiobutton(
+            self.frame,
+            text="Bernoulli",
+            variable=self.mode,
+            value=2).grid(row=0, column=2)
         
         formulaLabel = Label(self.frame, text = "F(x) =")
         formulaLabel.grid(row = 1, column = 0, padx = 5, pady = 5)
-        formulaValue = Entry(self.frame, textvariable = self.reactiveFormula, state='disabled', width=50)
+        formulaValue = Entry(
+            self.frame,
+            textvariable = self.reactiveFormula,
+            state='disabled', width=50)
         formulaValue.grid(row = 1, column = 1, columnspan = 5, pady = 5)
         formulaValue.bind("<Button-1>", self.openFormulaDialog)
 
